@@ -12,13 +12,17 @@ class App extends Component {
     super(props)
 
     //initialize an array to hold videos
-    this.state={ videos: [] }
+    this.state={
+      videos: [],
+      selectedVideo:null
+    }
 
     YTSearch({key: API_KEY, term: 'surfboards'}, (videos) => {
       //API call that gathers data from surfboards search term. videos = data
-      this.setState({ videos })
-      // this.setState({ videos: videos })
-      // first videos from array, second one from api call
+      this.setState({
+        videos: videos,
+        selectedVideo: videos[0]
+      })
     })
   }
 
@@ -26,8 +30,10 @@ class App extends Component {
     return (
       <div className="App">
         <SearchBar />
-        <VideoDetail video={this.state.videos[0]}/>
-        <VideoList videos={this.state.videos} />
+        <VideoDetail video={this.state.selectedVideo}/>
+        <VideoList
+          onVideoSelect={selectedVideo => this.setState({selectedVideo})}
+          videos={this.state.videos} />
       </div>
     );
   }
